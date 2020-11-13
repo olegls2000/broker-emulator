@@ -1,6 +1,7 @@
 package com.bta.brokeremulator.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bta.brokeremulator.model.UserAccount;
@@ -9,6 +10,8 @@ import com.bta.brokeremulator.service.UserAccountService;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private UserAccountRepository repository;
@@ -18,6 +21,10 @@ public class UserAccountServiceImpl implements UserAccountService {
         checkUsername(userAccount.getUsername());
         checkEmail(userAccount.getEmail());
 
+        userAccount.setActive(Boolean.TRUE);
+
+        String encPassword = passwordEncoder.encode(userAccount.getPassword());
+        userAccount.setPassword(encPassword);
         return repository.save(userAccount);
     }
 

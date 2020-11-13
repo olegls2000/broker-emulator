@@ -7,37 +7,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bta.brokeremulator.model.UserAccount;
 import com.bta.brokeremulator.service.UserAccountService;
 
 @Controller
+@RequestMapping("user")
 public class UserAccountController {
     @Autowired
     private UserAccountService userAccountService;
 
-    @GetMapping("/user/registration")
+    @GetMapping("registration")
     public String getRegistrationView() {
-        return "registration";
+        return "user/registration";
     }
 
-    @PostMapping("/user/registration")
-    public ResponseEntity<UserAccount> registerUser(@RequestBody UserAccount userAccount) {
+    @PostMapping("registration")
+    public ResponseEntity<UserAccount> registerUser(@ModelAttribute UserAccount userAccount) {
         UserAccount registeredUserAccount = userAccountService.save(userAccount);
         return new ResponseEntity<>(registeredUserAccount, OK);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<UserAccount> loginUser(@RequestParam(name = "username") String login,
-                                                 @RequestParam String password) {
-        final UserAccount registeredUserAccount = userAccountService.login(login, password);
-        if (registeredUserAccount == null) {
-            return new ResponseEntity<>(registeredUserAccount, FORBIDDEN);
-        }
-        return new ResponseEntity<>(registeredUserAccount, OK);
+    @GetMapping("login")
+    public String getLoginView() {
+       return "user/login";
     }
-
 }
