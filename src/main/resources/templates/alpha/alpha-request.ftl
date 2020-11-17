@@ -1,9 +1,7 @@
 <#import "../common/page.ftl" as common>
 
 <@common.page>
-
     <form action="/alpha/statistics" method="post">
-
         <div class="form-group">
             <label for="sticker">Company Sticker:</label>
             <input type="text" class="form-control" aria-describedby="stickerHelp" name="sticker">
@@ -12,14 +10,12 @@
         <div class="form-group">
             <label for="time-period">Time Period:</label>
             <select id="time-period" name="timePeriod" class="form-control">
-                <option selected>DAY</option>
-                <option>WEEK</option>
-                <option>MONTH</option>
-                <option>YEAR</option>
+                <option value="TIME_SERIES_DAILY">DAY</option>
+                <option value="TIME_SERIES_WEEKLY" selected>>WEEK</option>
+                <option value="TIME_SERIES_MONTHLY">MONTH</option>
+                <option value="TIME_SERIES_YEARLY">YEAR</option>
             </select>
         </div>
-
         <button type="submit" class="btn btn-primary">Request Statistics</button>
     </form>
-
 </@common.page>

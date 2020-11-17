@@ -1,17 +1,20 @@
 package com.bta.brokeremulator.dto;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+@Data
 @SuperBuilder
 @NoArgsConstructor
-@Data
-public class AlphaResponseDto {
-	private String sticker;
-	private LocalDate lastRefreshed;
-	private List<TradeItemDto> items;
+public class TradeItemDto {
+
+	private LocalDate period;
+	private double open;
+	private double high;
+	private double low;
+	private double close;
+	private long volume;
 }
