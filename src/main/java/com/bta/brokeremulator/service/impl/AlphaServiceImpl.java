@@ -34,15 +34,15 @@ public class AlphaServiceImpl implements AlphaService {
 		final ResponseEntity<AlphaResponseJson> responseEntity
 				= restTemplate.getForEntity(url, AlphaResponseJson.class);
 
-		return convertToDto(responseEntity.getBody());
+		return convertToDto(responseEntity.getBody(), request.getEndDate());
 	}
 
-	private AlphaResponseDto convertToDto(AlphaResponseJson body) {
+	private AlphaResponseDto convertToDto(AlphaResponseJson body, LocalDate endDate) {
 		final List<TradeItemDto> items = body.getWeeklyTimeSeries()
 												 .entrySet()
 												 .stream()
-												 //.map(entry-> toTradeItem(entry))
 												 .map(this::toTradeItem)
+												 .filter(tradeItem -> tradeItem.getPeriod().isBefore(endDate))
 												 .collect(toList());
 
 		return AlphaResponseDto.builder()
@@ -56,7 +56,10 @@ public class AlphaServiceImpl implements AlphaService {
 		return TradeItemDto.builder()
 					   .period(toDate(entry.getKey()))
 					   .open(Double.parseDouble(entry.getValue().get("1. open")))
-					   //TODO Complete at home
+					   .high(Double.parseDouble(entry.getValue().get("2. high")))
+					   .low(Double.parseDouble(entry.getValue().get("3. low")))
+					   .close(Double.parseDouble(entry.getValue().get("4. close")))
+					   .volume(Long.parseLong(entry.getValue().get("5. volume")))
 					   .build();
 	}
 

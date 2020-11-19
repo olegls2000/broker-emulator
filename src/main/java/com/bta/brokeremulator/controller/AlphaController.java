@@ -32,6 +32,8 @@ public class AlphaController {
 		final AlphaResponseDto responseDto = alphaService.getStatistics(request);
 		final Map<String, Object> params = new HashMap<>();
 		params.put("tradeItems", responseDto.getItems());
+		params.put("price", responseDto.getItems().get(0).getClose());
+
 		//TODO: Add sticker and other Info to the map, show it on UI
 
 		return new ModelAndView("alpha/statistics", params);
